@@ -1,17 +1,24 @@
 package com.codingwithmitch.mviexample.ui.main
 
+import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.codingwithmitch.mviexample.R
+import com.codingwithmitch.mviexample.ui.DataStateListener
 import com.codingwithmitch.mviexample.ui.main.state.MainStateEvent
 import com.codingwithmitch.mviexample.ui.main.state.MainStateEvent.*
+import java.lang.ClassCastException
 
 class MainFragment : Fragment(){
 
     lateinit var viewModel: MainViewModel
+
+    lateinit var dataStateHandler: DataStateListener
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +44,9 @@ class MainFragment : Fragment(){
 
             println("DEBUG: DataState: ${dataState}")
 
+            // Handle loading and error message
+            dataStateHandler.onDataStateChange(dataState)
+
             // Handle Data<T>
             dataState.data?.let { mainViewState ->
                 mainViewState.blogPosts?.let{
@@ -48,16 +58,6 @@ class MainFragment : Fragment(){
                     // set User data
                     viewModel.setUser(it)
                 }
-            }
-
-            // Handle Error
-            dataState.message?.let {
-
-            }
-
-            // Handle Loading
-            dataState.loading.let {
-
             }
         })
 
@@ -95,6 +95,16 @@ class MainFragment : Fragment(){
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        try {
+            dataStateHandler = context as DataStateListener
+        } catch (e: ClassCastException) {
+            Log.d("DEBUG-->", "$context must implement DataStateListener")
+        }
     }
 }
 
