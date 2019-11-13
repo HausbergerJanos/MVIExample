@@ -57,7 +57,7 @@ class MainFragment : Fragment(){
 
             // Handle Loading
             dataState.loading.let {
-                
+
             }
         })
 

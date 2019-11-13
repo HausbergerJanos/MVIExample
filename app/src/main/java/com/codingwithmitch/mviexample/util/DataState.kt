@@ -21,7 +21,7 @@ data class DataState<T>(
             )
         }
 
-        fun <T> data(message: String?, data: T?): DataState<T> {
+        fun <T> data(message: String? = null, data: T?): DataState<T> {
             return DataState(
                 message = message,
                 loading = false,
