@@ -5,13 +5,13 @@
 
     <item
         android:id="@+id/action_get_user"
-        android:title="get user"
+        android:title="Get User"
         app:showAsAction="never"
         />
 
     <item
         android:id="@+id/action_get_blogs"
-        android:title="get blogs"
+        android:title="Get Blogs"
         app:showAsAction="never"
         />
 
