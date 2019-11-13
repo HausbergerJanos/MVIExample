@@ -41,8 +41,10 @@ class MainActivity : AppCompatActivity(), DataStateListener {
             showLoading(it.loading)
 
             // Handle message
-            dataState.message?.let { message ->
-                showToast(message)
+            dataState.message?.let { event ->
+                event.getContentIfNotHandled()?.let { message ->
+                    showToast(message)
+                }
             }
         }
     }
