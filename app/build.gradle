@@ -41,6 +41,11 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit2_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit2_version"
 
+    // -- Http logging
+    def okhHttp3_version = "3.12.3"
+    implementation "com.squareup.okhttp3:okhttp:$okhHttp3_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhHttp3_version"
+
     // -- Lifecycle Components (ViewModel, LiveData and ReactiveStreams)
     def lifecycle_version = "2.2.0-alpha03"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
