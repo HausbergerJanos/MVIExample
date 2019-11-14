@@ -8,17 +8,22 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.codingwithmitch.mviexample.R
+import com.codingwithmitch.mviexample.model.BlogPost
 import com.codingwithmitch.mviexample.ui.DataStateListener
 import com.codingwithmitch.mviexample.ui.main.state.MainStateEvent
 import com.codingwithmitch.mviexample.ui.main.state.MainStateEvent.*
+import kotlinx.android.synthetic.main.fragment_main.*
 import java.lang.ClassCastException
 
-class MainFragment : Fragment(){
+class MainFragment : Fragment(), BlogRecyclerAdapter.Interaction {
 
     lateinit var viewModel: MainViewModel
 
     lateinit var dataStateHandler: DataStateListener
+
+    lateinit var blogRecyclerAdapter: BlogRecyclerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +42,20 @@ class MainFragment : Fragment(){
         }?: throw Exception("Invalid Activity")
 
         subscribeObservers()
+        initRecyclerView()
+    }
+
+    private fun initRecyclerView() {
+        recycler_view.apply {
+            layoutManager = LinearLayoutManager(activity)
+            blogRecyclerAdapter = BlogRecyclerAdapter(this@MainFragment)
+            adapter = blogRecyclerAdapter
+        }
+    }
+
+    override fun onItemSelected(position: Int, item: BlogPost) {
+        Log.d("DEBUG-->", "Clicked: $position")
+        Log.d("DEBUG-->", "Clicked: $item")
     }
 
     private fun subscribeObservers(){
@@ -66,7 +85,7 @@ class MainFragment : Fragment(){
         viewModel.viewState.observe(viewLifecycleOwner, Observer {viewState ->
             viewState.blogPosts?.let {
                 // set BlogPosts to RecyclerView
-                println("DEBUG: Setting blog posts to RecyclerView: ${viewState.blogPosts}")
+                blogRecyclerAdapter.submitList(it)
             }
 
             viewState.user?.let{
