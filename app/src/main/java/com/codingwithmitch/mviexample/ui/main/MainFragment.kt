@@ -9,12 +9,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.codingwithmitch.mviexample.R
 import com.codingwithmitch.mviexample.model.BlogPost
+import com.codingwithmitch.mviexample.model.User
 import com.codingwithmitch.mviexample.ui.DataStateListener
 import com.codingwithmitch.mviexample.ui.main.state.MainStateEvent
 import com.codingwithmitch.mviexample.ui.main.state.MainStateEvent.*
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.layout_blog_list_item.*
 import java.lang.ClassCastException
 
 class MainFragment : Fragment(), BlogRecyclerAdapter.Interaction {
@@ -90,9 +93,25 @@ class MainFragment : Fragment(), BlogRecyclerAdapter.Interaction {
 
             viewState.user?.let{
                 // set User data to widgets
-                println("DEBUG: Setting User data: ${viewState.user}")
+                setUserProperties(it)
             }
         })
+    }
+
+    private fun setUserProperties(user: User) {
+        email?.let {
+            it.text = user.email
+        }
+
+        username?.let {
+            it.text = user.username
+        }
+
+        view?.let {
+            Glide.with(it.context)
+                .load(user.image)
+                .into(image)
+        }
     }
 
     fun triggerGetUserEvent(){
